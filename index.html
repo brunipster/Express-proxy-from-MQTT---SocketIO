@@ -1,0 +1,11 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    document.writeln(`<h1>Connected ${socket}</h1>`)
+    socket.on('message', (data) => {
+        console.log(data)
+        var peru = data.features.find(country => country.attributes.Country_Region == "Peru")
+        console.log(peru)
+        document.writeln(`<h3>🦠${peru.attributes.Confirmed} - 💀${peru.attributes.Deaths} - 👋${peru.attributes.Recovered}</h3>`)
+    });
+</script>
