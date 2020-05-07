@@ -9,12 +9,10 @@ var config = {
 
 var client = mqtt.connect(host, config)
 
-var topics = configCountries.topics
+var topics = [...configCountries.topics,]
 
 client.on('connect', () => {
-
     console.log("Connected to COVID PubSub+ Broker!")
-
     topics.forEach((topic) => {
         console.log("Subscribing to topic: ", topic)
         client.subscribe(topic)

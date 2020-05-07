@@ -14,7 +14,8 @@ const config_countries = [
     { topic: "jhu/csse/covid19/cases/region/update/Suriname/>", socket: "coutry::Suriname", country: "Suriname" },
     { topic: "jhu/csse/covid19/cases/region/update/Guatemala/>", socket: "coutry::Guatemala", country: "Guatemala" },
     { topic: "jhu/csse/covid19/cases/region/update/Nicaragua/>", socket: "coutry::Nicaragua", country: "Nicaragua" },
-    { topic: "jhu/csse/covid19/cases/region/update/Panama/>", socket: "coutry::Panama", country: "Panama" }
+    { topic: "jhu/csse/covid19/cases/region/update/Panama/>", socket: "coutry::Panama", country: "Panama" },
+    { topic: "jhu/csse/covid19/raw", socket: "country::All", country: "All" }
 ]
 
 const topics = config_countries.map(obj => obj.topic)
