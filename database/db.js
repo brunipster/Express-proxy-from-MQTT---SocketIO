@@ -1,44 +1,68 @@
-var sqlite3 = require("sqlite3");
-sqlite3.verbose();
+// var sqlite3 = require("sqlite3");
+const low = require('lowdb')
+const FileAsync = require('lowdb/adapters/FileAsync')
 
-class AppConnect {
-    constructor() {
-        this.db = new sqlite3.Database("database.db"), (err) => {
-            if (err) {
-                console.log('Database not connected', err)
-            } else {
-                console.log('Database Connected')
-            }
-        };
-    }
-
-    run(sql, params = []) {
-        return new Promise((resolve, reject) => {
-            this.db.run(sql, params, function (err) {
-                if (err) {
-                    console.log('Error running sql ' + sql)
-                    console.log(err)
-                    reject(err)
-                } else {
-                    resolve({ id: this.lastID })
-                }
-            })
-        })
-    }
-
-    get(sql, params = []) {
-        return new Promise((resolve, reject) => {
-            this.db.get(sql, params, (err, result) => {
-                if (err) {
-                    console.log('Error running sql: ' + sql)
-                    console.log(err)
-                    reject(err)
-                } else {
-                    resolve(result)
-                }
-            })
-        })
-    }
+const adapter = new FileAsync('db.json')
+const database = function () {
+    return low(adapter).then(async db => {
+        await db.defaults({ country: [] }).write()
+        return db
+    })
 }
 
-module.exports = AppConnect;
+// class AppConnect {
+//     constructor() {
+//         const adapter = new FileAsync('db.json')
+//         this.db = low(adapter).then(async db => {
+//             await db.defaults({ country: { "peru": "Pruebas" } }).write()
+//             return db
+
+//         })
+//         // this.db.defaults({ country: [] }).write()
+//     }
+
+//     // run(sql, params = []) {
+//     //     return new Promise((resolve, reject) => {
+//     //         this.db.run(sql, params, function (err) {
+//     //             if (err) {
+//     //                 console.log('Error running sql ' + sql)
+//     //                 console.log(err)
+//     //                 reject(err)
+//     //             } else {
+//     //                 resolve({ id: this.lastID })
+//     //             }
+//     //         })
+//     //     })
+//     // }
+
+//     delete(collection) {
+//         return this.db.then(db => {
+//             try {
+//                 return db.set(collection, []).write()
+//             } catch (error) {
+//                 return new Promise((resolve) => {
+//                     console.log(`ERROR DB DELETE ALL : ${error}`)
+//                     resolve({ error })
+//                 })
+//             }
+//         })
+//     }
+
+//     get(collection) {
+//         return this.db.then(db => {
+//             try {
+//                 return db.get(collection).value()
+//             } catch (error) {
+//                 return new Promise((resolve) => {
+//                     console.log(`ERROR DB GET ALL : ${error}`)
+//                     resolve({ error })
+//                 })
+//             }
+
+//         })
+//     }
+
+//     insert
+// }
+
+module.exports = database;

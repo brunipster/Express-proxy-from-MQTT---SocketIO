@@ -3,16 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app"
+    "start": "node ./index"
+  },
+  "engines": {
+    "node": "10.16.0"
   },
   "dependencies": {
-    "@feathersjs/feathers": "^4.5.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "lowdb": "^1.0.0",
     "morgan": "~1.9.1",
     "mqtt": "^4.0.0",
-    "socket.io": "^2.3.0",
-    "sqlite3": "^4.2.0"
+    "socket.io": "^2.3.0"
   }
 }

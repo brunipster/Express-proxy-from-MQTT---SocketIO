@@ -1,73 +1,96 @@
 class CountryRepository {
     constructor(dao) {
         this.dao = dao
-        this.createTable()
     }
-
-    createTable() {
-        const sql = `
-        CREATE TABLE IF NOT EXISTS country (
-            longitude REAL,
-            latitude REAL,
-            recovered INTEGER,
-            active INTEGER,
-            deaths INTEGER,
-            confirmed INTEGER,
-            country_region TEXT,
-            province_state TEXT,
-            last_update TEXT)`
-        return this.dao.run(sql)
-    }
-
+    // return this.dao.run(
+    //     `INSERT INTO country (
+    //     longitude,
+    //     latitude,
+    //     recovered,
+    //     active,
+    //     deaths,
+    //     confirmed,
+    //     country_region,
+    //     province_state,
+    //     last_update)
+    //     VALUES (?,?,?,?,?,?,?,?,?)`,
+    //     [country.longitude,
+    //     country.latitude,
+    //     country.recovered,
+    //     country.active,
+    //     country.deaths,
+    //     country.confirmed,
+    //     country.country_region,
+    //     country.province_state,
+    //     country.last_update
+    //     ]
+    // )
     create(country) {
-        return this.dao.run(
-            `INSERT INTO country (
-            longitude,
-            latitude,
-            recovered,
-            active,
-            deaths,
-            confirmed,
-            country_region,
-            province_state,
-            last_update)
-            VALUES (?,?,?,?,?,?,?,?,?)`,
-            [country.longitude,
-            country.latitude,
-            country.recovered,
-            country.active,
-            country.deaths,
-            country.confirmed,
-            country.country_region,
-            country.province_state,
-            country.last_update
-            ]
-        )
+        return this.dao.then(db => {
+            try {
+                return db.get("country").push(country).write()
+            } catch (error) {
+                return new Promise((resolve) => {
+                    console.log(`ERROR DB CREATE : ${error}`)
+                    resolve({ error })
+                })
+            }
+        })
     }
 
     deleteAll() {
-        return this.dao.run('DELETE FROM country')
+        return this.dao.then(db => {
+            try {
+                return db.set("country", []).write()
+            } catch (error) {
+                return new Promise((resolve) => {
+                    console.log(`ERROR DB DELETE ALL : ${error}`)
+                    resolve({ error })
+                })
+            }
+        })
     }
 
     getAll() {
-        return this.dao.run(
-            'SELECT * FROM country'
-        )
+        return this.dao.then(db => {
+            try {
+                return db.get("country").value()
+            } catch (error) {
+                return new Promise((resolve) => {
+                    console.log(`ERROR DB GET ALL : ${error}`)
+                    resolve({ error })
+                })
+            }
+
+        })
     }
 
-    getByCountry(country) {
-        console.log(country)
-        return this.dao.get(
-            `SELECT longitude,
-            latitude,
-            recovered,
-            active,
-            deaths,
-            confirmed,
-            country_region,
-            province_state,
-            last_update FROM country where country_region = ? `, [country]
-        )
+    filter(filter) {
+        return this.dao.then(db => {
+            try {
+                return db.get("country").filter(filter).value()
+            } catch (error) {
+                return new Promise((resolve) => {
+                    console.log(`ERROR DB FILTER ALL : ${error}`)
+                    resolve({ error })
+                })
+            }
+
+        })
+    }
+
+    find(filter) {
+        return this.dao.then(db => {
+            try {
+                return db.get("country").find(filter).value()
+            } catch (error) {
+                return new Promise((resolve) => {
+                    console.log(`ERROR DB FIND ALL : ${error}`)
+                    resolve({ error })
+                })
+            }
+
+        })
     }
 }
 
