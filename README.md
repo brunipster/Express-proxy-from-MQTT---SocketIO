@@ -23,6 +23,10 @@ API Covid from [SolaceLabs](https://github.com/SolaceLabs/covid19-stream-process
 
 ## Usage
 
+Please go [here](https://socket-covid.herokuapp.com/)
+
+## Local Deploy
+
 Install node modules
 
 ` npm install `
