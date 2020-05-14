@@ -17,12 +17,8 @@ app.use(cookieParser());
 var port = process.env.PORT || '3000';
 app.set('port', port);
 
-app.get('/libs', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
 app.get("/", (req, res) => {
-    res.send("Welcome to a basic express App");
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.use('/country', usersRouter);

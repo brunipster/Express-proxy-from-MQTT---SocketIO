@@ -1,11 +1,137 @@
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    const socket = io();
-    document.writeln(`<h1>Connected ${socket}</h1>`)
-    socket.on('message', (data) => {
-        console.log(data)
-        var peru = data.features.find(country => country.attributes.Country_Region == "Peru")
-        console.log(peru)
-        document.writeln(`<h3>🦠${peru.attributes.Confirmed} - 💀${peru.attributes.Deaths} - 👋${peru.attributes.Recovered}</h3>`)
-    });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦠</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Roboto&display=swap"
+        rel="stylesheet">
+</head>
+<style>
+    body {
+        margin: 0;
+        background-color: #F0EFF4;
+    }
+
+    .header {
+        width: 100%;
+        background-color: #506C64;
+    }
+
+    .header__phragraph {
+        font-family: 'Playfair Display', serif;
+        font-size: 2em;
+        color: white;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .wrapper {
+        font-family: 'Roboto', sans-serif;
+        /* border: 1px solid red; */
+        max-width: 70%;
+        margin: auto;
+    }
+
+    .wrapper__phragraph {}
+
+    .wrapper__image {
+        max-width: 100%;
+    }
+
+    .wrapper__unorderedlist {
+        list-style: none;
+        border-left: 4px solid #506C64;
+    }
+
+    .wrapper__unorderedlist li {
+        margin-top: 5px;
+    }
+
+    .wrapper__unorderedlist li::before {
+        color: #506C64;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #AEB7B3;
+    }
+</style>
+
+<body>
+    <header class="header">
+        <p class="header__phragraph">API Coronavirus</p>
+    </header>
+    <section class="wrapper">
+        <h1>API Covid from SolaceLabs expose with socketIO</h1>
+        <p class="wrapper__phragraph">Express server that consumes API through MQTT to <a
+                href="https://github.com/SolaceLabs/covid19-stream-processors#overview--data-sources">Solace</a> server
+            and
+            saves latest update in a json file through LowDB</p>
+        <h2>How to consume</h2>
+        <p class="wrapper__phragraph">
+            Add next code at your web
+        </p>
+        <script src="https://gist.github.com/brunipster/7f6a68731223407a40500212e753e02d.js"></script>
+        <p class="wrapper__phragraph">
+            In this example it is subscription to the <code>country::US</code> message, that is to say for US but there
+            is a message for each
+            country.
+            In the following list, specify each code message for each country
+        </p>
+        <ul class="wrapper__unorderedlist">
+            <li>US - <code>country::US</code></li>
+            <li>Peru - <code>country::Peru</code></li>
+            <li>Mexico - <code>country::Mexico</code></li>
+            <li>Argentina - <code>country::Argentina</code></li>
+            <li>Chile - <code>country::Chile</code></li>
+            <li>Colombia - <code>country::Colombia</code></li>
+            <li>Brazil - <code>country::Brazil</code></li>
+            <li>Ecuador - <code>country::Ecuador</code></li>
+            <li>Bolivia - <code>country::Bolivia</code></li>
+            <li>Paraguay - <code>country::Paraguay</code></li>
+            <li>Uruguay - <code>country::Uruguay</code></li>
+            <li>Venezuela - <code>country::Venezuela</code></li>
+            <li>Suriname - <code>country::Suriname</code></li>
+            <li>Guatemala - <code>country::Guatemala</code></li>
+            <li>Nicaragua - <code>country::Nicaragua</code></li>
+            <li>Panama - <code>country::Panama</code></li>
+        </ul>
+        <h3>Get All 🙌</h3>
+        <p class="wrapper__phragraph">
+            If you really feel adventorus, you can use message <code>country::All</code> that emit each 45 seconds the
+            last update of all the countries even many more from a list above. See next example of JSON Structure
+            Response:
+        </p>
+        <script src="https://gist.github.com/brunipster/f453ddc6c6172cc0a8419b6c6d5153d0.js"></script>
+        <h2>One more thing</h2>
+        <p class="wrapper__phragraph">
+            Maybe you don't want to use socket and just need a rest endpoint. So here is:
+            <br>
+            <br>
+            <code><a target="_blank" href="https://socket-covid.herokuapp.com/country/US">https://socket-covid.herokuapp.com/country/[country
+                name]</a></code>
+            <br>
+            <br>
+            <b>You can find the names of countries in the list above</br>
+
+        </p>
+    </section>
+    <footer class="footer">
+        <b>v 1.0</b>
+        <a href="https://github.com/brunipster/Express-proxy-from-MQTT---SocketIO" target="_blank">
+            <svg class="octicon octicon-mark-github v-align-middle" height="30" viewBox="0 0 16 16" version="1.1"
+                width="30" aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg></a>
+        <span>Made with ♥ by <a href="https://github.com/brunipster">@Brunipster</a></span>
+    </footer>
+</body>
+
+</html>
