@@ -1,7 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var repository = require('../utils/repostory')
-/* GET users listing. */
+
+router.get('/', function (req, res) {
+  repository.countryRepository.getAll().then(result => {
+    if (result) {
+      res.status(200).send(result);
+    } else {
+      res.status(204).send({ status: "Not Found" });
+    }
+  }).catch(error => {
+    res.status((500).send(error));
+  })
+})
+
 router.get('/:country', function (req, res) {
   const { country } = req.params
   if (country) {
@@ -14,10 +26,10 @@ router.get('/:country', function (req, res) {
 
     }
     ).catch(error => {
-      res.status(500) - send(error);
+      res.status(500).send(error);
     })
   } else {
-    res.status(401) - send("Request malformed");
+    res.status(401).send("Request malformed");
   }
 
 });
@@ -33,10 +45,10 @@ router.get('/:country/:province', function (req, res) {
       }
     }
     ).catch(error => {
-      res.status(500) - send(error);
+      res.status(500).send(error);
     })
   } else {
-    res.status(401) - send("Request malformed");
+    res.status(401).send("Request malformed");
   }
 
 });
